@@ -62,8 +62,11 @@ function App() {
                     history.push('/');
                 }
             })
+            .catch((err) => {
+                console.log(err);
+            })
         }
-    })
+    }, [])
 
     function handleCardLike(card) {
         const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -104,13 +107,25 @@ function App() {
         setIsEditAvatarPopupOpen(false);
         setIsImagePopupOpen(false);
         setIsInfoTooltipOpen(false);
-        setSelectedCard();
+        setSelectedCard({});
     }
 
     function handleCardClick (card) {
         setSelectedCard(card);
         setIsImagePopupOpen(true);
     }
+
+    React.useEffect(() => {
+        const closeByEscape = (e) => {
+            if (e.key === 'Escape') {
+                closeAllPopups();
+            }
+        }
+
+        document.addEventListener('keydown', closeByEscape)
+
+        return () => document.removeEventListener('keydown', closeByEscape)
+    }, [])
 
     function handleUpdateUser({name, about}) {
         api.setUserInfo(name, about)
@@ -145,8 +160,17 @@ function App() {
         })
     }
 
-    function handleLogin() {
-        setLoggedIn(true);
+    function handleLogin(email, password) {
+        auth.authorize(email, password)
+        .then((data) => {
+            if (data.token) {
+                setLoggedIn(true);
+                history.push('/');
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        })
     }
 
     function handleSignOut() {
@@ -160,8 +184,11 @@ function App() {
             setIsSuccess(true);
             history.push('/sign-in');
         })
-        .catch(() => setIsSuccess(false))
-        .then(() => setIsInfoTooltipOpen(true))
+        .catch((err) => {
+            console.log(err);
+            setIsSuccess(false);
+        })
+        .finally(() => setIsInfoTooltipOpen(true))
     }
 
   return (
