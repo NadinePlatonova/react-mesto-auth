@@ -9,9 +9,6 @@ export const register = (email, password) => {
         body: JSON.stringify({email, password})
     })
     .then(checkResponseStatus)
-    .catch((err) => {
-        console.log(err);
-    })
 }
 
 export const authorize = (email, password) => {
@@ -28,9 +25,6 @@ export const authorize = (email, password) => {
             localStorage.setItem('token', data.token);
             return data;
         }
-    })
-    .catch((err) => {
-        console.log(err);
     })
 }
 
