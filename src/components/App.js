@@ -66,6 +66,7 @@ function App() {
                 console.log(err);
             })
         }
+        // eslint-disable-next-line
     }, [])
 
     function handleCardLike(card) {
