@@ -147,7 +147,6 @@ function App() {
 
     function handleLogin() {
         setLoggedIn(true);
-        history.push('/sign-in');
     }
 
     function handleSignOut() {
