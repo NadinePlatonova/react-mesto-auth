@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import '../index.css';
 import Header from './Header';
 import Main from './Main';
@@ -13,7 +13,8 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import Login from './Login';
 import Register from './Register';
-
+import ProtectedRoute from './ProtectedRoute';
+import * as auth from '../utils/auth';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({})
@@ -22,8 +23,10 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
-  const [cards, setCards] = React.useState([])
-
+  const [cards, setCards] = React.useState([]);
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [userEmail, setUserEmail] = React.useState('');
+  const history = useHistory();
 
     React.useEffect(() => {
         api.getUserInfo()
@@ -44,6 +47,20 @@ function App() {
             console.log(err);
         })
     }, [])
+
+    React.useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            auth.getContent(token)
+            .then((data) => {
+                if (data) {
+                    setUserEmail(data.data.email);
+                    setLoggedIn(true);
+                    history.push('/');
+                }
+            })
+        }
+    })
 
     function handleCardLike(card) {
         const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -124,30 +141,41 @@ function App() {
         })
     }
 
+    function handleLogin() {
+        setLoggedIn(true);
+    }
+
+    function handleSignOut() {
+        localStorage.removeItem('token');
+        history.push('/sign-in');
+    }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
         <div>  
-        <Header />
+        <Header email={userEmail} onSignOut={handleSignOut}/>
 
         <Switch>
-            <Route exact path="/">
-                <Main
-                    onEditProfile={handleEditProfileClick}
-                    onAddPlace={handleAddPlaceClick}
-                    onEditAvatar={handleEditAvatarClick}
-                    onCardClick={handleCardClick}
-                    cards={cards}
-                    onCardLike={handleCardLike}
-                    onCardDelete={handleCardDelete}
-                />
-            </Route>
+            <ProtectedRoute
+            exact path="/"
+            loggedIn={loggedIn}
+            component={Main}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            onCardClick={handleCardClick}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+            />
+            
             
             <Route exact path="/sign-up">
                 <Register />
             </Route>
             
             <Route exact path="/sign-in">
-                <Login />
+                <Login handleLogin={handleLogin}/>
             </Route>
             
         </Switch>
