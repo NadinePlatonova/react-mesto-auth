@@ -1,33 +1,39 @@
-# Место (создан на React c авторизацией и регистрацией)
-_В данном проекте использованы предыдущие наработки по проекту Место, но добавлена возможность регистрировать и авторизовать пользователя._
+# Mesto (React, authorization and registration)
 
-**Основной стек:** HTML, CSS, JavaScript, React.js.
+_This project utilizes previous work from the Mesto project, but adds the ability to register and authorize users._
 
-**Основной функционал:**
-* авторизация, регистрация и проверка токена через сервис `https://auth.nomoreparties.co`;
-* аутентификация пользователя;
-* редактирование профиля (имя пользователя, его профессия/род деятельности, а также аватар);
-* добавление и удаление карточки (удаление только карточки пользователя, чужие карточки не удаляются);
-* возможность ставить и снимать лайк у понравившихся карточек;
-* подсчет лайков;
-* при нажатии на картинку она открывается на полный экран.
+**Main Stack:** HTML, CSS, JavaScript, React.js.
 
-**Использованы:**
-* React Router для маршрутизации приложения;
-* CRA (Create React App).
+**Main features:**
 
-**Инструкция по разворачиванию приложения:**
-* Шаг 1
-`git clone https://github.com/NadinePlatonova/react-mesto-auth.git`
-* Шаг 2
-`cd react-mesto-auth`
-* Шаг 3
-`npm install`
-* Шаг 4
-`npm start`
+- Authorization, registration, and token validation via the service `https://auth.nomoreparties.co`;
+- User authentication;
+- Profile editing (username, occupation, and avatar);
+- Adding and deleting cards (only the user’s own cards can be deleted, others’ cards cannot be deleted);
+- Ability to like and unlike cards;
+- Like count;
+- Clicking on an image opens it in full screen.
 
-**Статус проекта:**
-* проект не завершен, планируется доработка.
+**Used:**
 
-**Дальнейший план по доработке:**
-* добавить валидацию форм.
+- React Router for app routing;
+- CRA (Create React App).
+
+**Instructions for running the application:**
+
+- Step 1
+  `git clone https://github.com/NadinePlatonova/react-mesto-auth.git`
+- Step 2
+  `cd react-mesto-auth`
+- Step 3
+  `npm install`
+- Step 4
+  `npm start`
+
+**Project status:**
+
+- The project is not finished; further development is planned.
+
+**Further development plan:**
+
+- Add form validation.
